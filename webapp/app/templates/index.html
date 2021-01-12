@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiny Colorpicker: A lightweight cross browser color picker.</title>
+    <link rel="stylesheet" href="/static/tinycolorpicker.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen"/>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- build:js jquery.tinycolorpicker.js -->
+    <script type="text/javascript" src="/static/jquery.tinycolorpicker.js"></script>
+    <script type="text/javascript" src="/static/script.js"></script>
+</head>
+<body>
+    <div id = "content">
+        <h1>PicoLeaf</h1>
+        <div id = "pickers">
+        </div>
+
+        <div>
+            <input type="radio" name="animation" id = "still" value="still"><label for="still">Still</label>
+            <input type="radio" name="animation" id = "breathing" value="breathing"><label for="breathing">Breathing</label>
+            <input type="radio" name="animation" id = "sliding" value="sliding"><label for="sliding">Sliding</label>
+        </div>
+   
+        <div id = "canvasParent">
+            <canvas id = "canvas" width = "600">
+            </canvas>
+        </div>
+    </div>
+</body>
+</html>
