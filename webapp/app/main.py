@@ -3,6 +3,7 @@
 import os
 # from requests import get, post, put
 import requests as rq
+import configparser
 from flask import Flask, request, Response, render_template
 from json import dumps
 from struct import pack
@@ -22,6 +23,8 @@ OPCODE_FRAME_END   = 1
 OPCODE_SLEEP       = 2
 OPCODE_LED         = 3
 
+ledData = None
+
 app = Flask(__name__,
 	static_folder = 'static',
 	template_folder='templates')
@@ -32,13 +35,14 @@ def _createStore(data):
 @app.route("/update", methods = ["POST"])
 def _update():
 	global version
-	data = request.get_json()
+	global ledData
+	ledData = request.get_json()
 
 	print("Received:")
-	print(data)
+	print(ledData)
 	
 	# res = rq.put("/".join((RETRIEVE_URL, ID)), headers =  {"content-type": "application/json"}, json = data).json()
-	res = rq.post("/".join((RETRIEVE_URL, ID)), headers =  {"content-type": "application/json"}, json = data).json()
+	res = rq.post("/".join((RETRIEVE_URL, ID)), headers =  {"content-type": "application/json"}, json = ledData).json()
 
 	version += 1
 
@@ -46,47 +50,45 @@ def _update():
 
 @app.route("/get", methods = ["GET"])
 def _get():
-	data = rq.get("/".join((RETRIEVE_URL, ID))).json()
+	global ledData
+
+	# Read animation config
+	config = configparser.ConfigParser()
+	config.read("animations.ini")
+
+	if ledData is None:
+		ledData = rq.get("/".join((RETRIEVE_URL, ID))).json()
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version) # Version
 
-	if "animation" not in data or "colors" not in data:
+	if "animation" not in ledData or "colors" not in ledData:
 		return "\x00Invalid data", 400
 
-	if data["animation"] == "still":
-		frames = 1
-		brightnessStart = 16
-		brightnessAdd = 0
-		offset_colors_per_frame = 0
-		sleepMs = 100
-	elif data["animation"] == "breathing":
-		frames = 32
-		brightnessStart = 1
-		brightnessAdd = 1
-		offset_colors_per_frame = 0
-		sleepMs = 40
-	elif data["animation"] == "sliding":
-		frames = len(data["colors"])
-		brightnessStart = 16
-		brightnessAdd = 0
-		offset_colors_per_frame = 1
-		sleepMs = 100
+	frames = int(config[ledData["animation"]]["frames"])
+
+	if frames == 0:
+		frames = len(ledData["colors"])
+	brightnessStart = int(config[ledData["animation"]]["brightnessStart"])
+	brightnessAdd = int(config[ledData["animation"]]["brightnessAdd"])
+	offsetColorsPerFrame = int(config[ledData["animation"]]["offsetColorsPerFrame"])
+	sleepMs = int(config[ledData["animation"]]["sleepMs"])
+	endSleep = int(config[ledData["animation"]]["endSleep"])
 
 	beginOffset = 0
-	ledsNum = len(data["colors"])
+	ledsNum = len(ledData["colors"])
 	brightness = brightnessStart
 
 	for frameIdx in range(frames):
-		beginOffset = (beginOffset + offset_colors_per_frame) % ledsNum
+		beginOffset = (beginOffset + offsetColorsPerFrame) % ledsNum
 
-		if (data["animation"] == "breathing") and frameIdx == int(frames / 2):
+		if (ledData["animation"] == "breathing") and frameIdx == int(frames / 2):
 			brightnessAdd = -1
 
 		response += pack("B", OPCODE_FRAME_START)
 
 		for ledIdx in range(ledsNum):
-			val = data["colors"][(beginOffset + ledIdx) % ledsNum]
+			val = ledData["colors"][(beginOffset + ledIdx) % ledsNum]
 
 			if "red" not in val:
 				continue
@@ -105,17 +107,24 @@ def _get():
 
 		brightness += brightnessAdd
 
+	while endSleep > 255:
+		response += pack("BB", OPCODE_SLEEP, 255)
+		endSleep -= 255
+
+	response += pack("BB", OPCODE_SLEEP, endSleep)
 	# print("Response len: %d" % len(response))
 
 	return response
 
 @app.route("/getText", methods = ["GET"])
 def _getText():
-	data = rq.get("/".join((RETRIEVE_URL, ID))).json()
+	global ledData
 
-	print("Data:", data)
+	ledData = rq.get("/".join((RETRIEVE_URL, ID))).json()
+
+	print("Data:", ledData)
 	
-	return dumps(data)
+	return dumps(ledData)
 
 @app.route("/", methods = ["GET"])
 def root():

@@ -1,6 +1,6 @@
 // Const values
-var NUM_TRIANGLES = 6;
-var LEDS_PER_COLOR = 2;
+var NUM_TRIANGLES = 4;
+var LEDS_PER_COLOR = 6;
 
 function createPicker(parentId, newId, callback)
 {
@@ -73,7 +73,7 @@ function createTriangles(num)
 {
 	var canvas = document.getElementById("canvas");
 
-	if (screen.width > 480)
+	if (window.innerWidth > 480)
 	{
 		var side = 100;
 		var buffer = 10;
@@ -82,7 +82,7 @@ function createTriangles(num)
 	{
 		var side = 90;
 		var buffer = 9;
-		canvas.width /= 2;
+		canvas.width = 300;
 	}
 	
 	var total_width = num * (side + buffer) / 2;
