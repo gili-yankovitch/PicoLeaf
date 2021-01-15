@@ -207,8 +207,8 @@ $(document).ready(function() {
 		createTriangles(NUM_TRIANGLES);
 	});
 
-	$('#picker0')[0].style.marginRight = "100px";
-	$('#picker1')[0].style.marginLeft = "100px";
+	$('#picker0')[0].style.marginRight = "50px";
+	$('#picker1')[0].style.marginLeft = "50px";
 
 	$("input[name='animation']").change(function (event) {
 		createTriangles(NUM_TRIANGLES);
