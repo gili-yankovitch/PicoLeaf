@@ -38,13 +38,11 @@ def _update():
 	global ledData
 	ledData = request.get_json()
 
-	print("Received:")
-	print(ledData)
-	
-	# res = rq.put("/".join((RETRIEVE_URL, ID)), headers =  {"content-type": "application/json"}, json = data).json()
 	res = rq.post("/".join((RETRIEVE_URL, ID)), headers =  {"content-type": "application/json"}, json = ledData).json()
 
 	version += 1
+
+	print("Version: %d" % version)
 
 	return dumps(res)
 
@@ -60,7 +58,7 @@ def _get():
 		ledData = rq.get("/".join((RETRIEVE_URL, ID))).json()
 
 	response = bytes()
-	response += pack("BB", VALID_CODE, version) # Version
+	response += pack("BB", VALID_CODE, version & 0xff) # Version
 
 	if "animation" not in ledData or "colors" not in ledData:
 		return "\x00Invalid data", 400
