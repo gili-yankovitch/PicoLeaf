@@ -7,13 +7,13 @@ function createPicker(parentId, newId, callback)
 	var colorPicker = document.createElement("div");
 	colorPicker.setAttribute("id", newId);
 	colorPicker.setAttribute("class", "colorPicker");
-	
+
 	var color = document.createElement("a");
 	color.setAttribute("class", "color");
 
 	var colorInner = document.createElement("div");
 	colorInner.setAttribute("class", "colorInner");
-	
+
 	var track = document.createElement("div");
 	track.setAttribute("class", "track");
 
@@ -46,7 +46,7 @@ function createPicker(parentId, newId, callback)
 function hexToRGB(hex)
 {
 	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	
+
 	return { "red": parseInt(result[1], 16), "green": parseInt(result[2], 16), "blue": parseInt(result[3], 16) };
 }
 
@@ -84,7 +84,7 @@ function createTriangles(num)
 		var buffer = 9;
 		canvas.width = 300;
 	}
-	
+
 	var total_width = num * (side + buffer) / 2;
 
 	var x = (canvas.width - total_width - side / 2) / 2;
@@ -95,9 +95,9 @@ function createTriangles(num)
 	var colorStart = $('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').colorHex;
 	if (colorStart == "")
 		colorStart = "#ffffff";
-	
+
 	colorStart = hexToRGB(colorStart);
-	
+
 	var colorEnd = $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex;
 	if (colorEnd == "")
 		colorEnd = "#ffffff";
@@ -160,7 +160,7 @@ function createTriangles(num)
 
 				x -= side;
 				ctx.lineTo(x, y);
-				
+
 				x += side / 2;
 				y -= height;
 				ctx.lineTo(x, y);
@@ -179,17 +179,21 @@ function createTriangles(num)
 
 	console.log(output);
 
-	$.ajax({
-		type: "POST",
-		url: "/update",
-		data: JSON.stringify(output),
-		success: function ()
-		{
-			console.log("Update done");
-		},
-		contentType: "application/json",
-		dataType: "json"
-	});
+	// Post twice to catch other replicas on server
+	for (var updateIdx = 0; updateIdx < 2; ++updateIdx)
+	{
+		$.ajax({
+			type: "POST",
+			url: "/update",
+			data: JSON.stringify(output),
+			success: function ()
+			{
+				console.log("Update done");
+			},
+			contentType: "application/json",
+			dataType: "json"
+		});
+	}
 }
 
 $(document).ready(function() {
