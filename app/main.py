@@ -15,6 +15,7 @@ ID = "952953a2-b326-4ed4-8807-ed0b06ac88e2"
 RETRIEVE_URL = "https://api.npoint.io/"
 ID = "c20179a77bb32cab79d1"
 
+ledData = None
 version = 0
 VALID_CODE = 0x42
 
@@ -22,8 +23,6 @@ OPCODE_FRAME_START = 0
 OPCODE_FRAME_END   = 1
 OPCODE_SLEEP       = 2
 OPCODE_LED         = 3
-
-ledData = None
 
 app = Flask(__name__,
 	static_folder = 'static',
@@ -38,6 +37,9 @@ def _update():
 	global ledData
 	ledData = request.get_json()
 
+	# Add version
+	ledData["version"] = version
+
 	res = rq.post("/".join((RETRIEVE_URL, ID)), headers =  {"content-type": "application/json"}, json = ledData).json()
 
 	version += 1
@@ -49,6 +51,7 @@ def _update():
 @app.route("/get", methods = ["GET"])
 def _get():
 	global ledData
+	global version
 
 	# Read animation config
 	config = configparser.ConfigParser()
@@ -56,6 +59,7 @@ def _get():
 
 	if ledData is None:
 		ledData = rq.get("/".join((RETRIEVE_URL, ID))).json()
+		version = ledData["version"]
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
