@@ -133,7 +133,7 @@ function createTriangles(num)
 
 			ctx.lineWidth = "2";
 
-			if (i % 2 == 0)
+			if (i % 2 == 1)
 			{
 				ctx.moveTo(x, y);
 
@@ -175,7 +175,7 @@ function createTriangles(num)
 		}
 	}
 
-	var output = {"animation": $("input[name='animation']:checked").val(), "colors": colorPut};
+	var output = {"animation": $("input[name='animation']:checked").val(), "colors": colorPut.reverse()};
 
 	console.log(output);
 
@@ -228,8 +228,8 @@ $(document).ready(function() {
 
 		// data = {"colors": data};
 
-		$('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][0]["red"] + ", " + data["colors"][0]["green"] + ", " + data["colors"][0]["blue"] + ")");
-		$('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][data["colors"].length - 1]["red"] + ", " + data["colors"][data["colors"].length - 1]["green"] + ", " + data["colors"][data["colors"].length - 1]["blue"] + ")");
+		$('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][0]["red"] + ", " + data["colors"][0]["green"] + ", " + data["colors"][0]["blue"] + ")");
+		$('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][data["colors"].length - 1]["red"] + ", " + data["colors"][data["colors"].length - 1]["green"] + ", " + data["colors"][data["colors"].length - 1]["blue"] + ")");
 
 
 		createTriangles(NUM_TRIANGLES);
