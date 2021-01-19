@@ -175,7 +175,7 @@ function createTriangles(num)
 		}
 	}
 
-	var output = {"animation": $("input[name='animation']:checked").val(), "colors": colorPut.reverse()};
+	var output = {"animation": $("input[name='animation']:checked").val(), "colors": colorPut};
 
 	console.log(output);
 
@@ -199,20 +199,20 @@ function createTriangles(num)
 $(document).ready(function() {
 	console.log("Init");
 
-	createPicker("pickers", "picker1", function(event) {
-		console.log("Color #1: " + $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
-
-		createTriangles(NUM_TRIANGLES);
-	});
-
 	createPicker("pickers", "picker0", function(event) {
 		console.log("Color #0: " + $('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
 
 		createTriangles(NUM_TRIANGLES);
 	});
 
-	$('#picker1')[0].style.marginRight = "50px";
-	$('#picker0')[0].style.marginLeft = "50px";
+	createPicker("pickers", "picker1", function(event) {
+		console.log("Color #1: " + $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
+
+		createTriangles(NUM_TRIANGLES);
+	});
+
+	$('#picker0')[0].style.marginRight = "50px";
+	$('#picker1')[0].style.marginLeft = "50px";
 
 	$("input[name='animation']").change(function (event) {
 		createTriangles(NUM_TRIANGLES);
@@ -228,8 +228,8 @@ $(document).ready(function() {
 
 		// data = {"colors": data};
 
-		$('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][0]["red"] + ", " + data["colors"][0]["green"] + ", " + data["colors"][0]["blue"] + ")");
-		$('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][data["colors"].length - 1]["red"] + ", " + data["colors"][data["colors"].length - 1]["green"] + ", " + data["colors"][data["colors"].length - 1]["blue"] + ")");
+		$('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][0]["red"] + ", " + data["colors"][0]["green"] + ", " + data["colors"][0]["blue"] + ")");
+		$('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').setColor("rgb(" + data["colors"][data["colors"].length - 1]["red"] + ", " + data["colors"][data["colors"].length - 1]["green"] + ", " + data["colors"][data["colors"].length - 1]["blue"] + ")");
 
 
 		createTriangles(NUM_TRIANGLES);
