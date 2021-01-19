@@ -92,13 +92,13 @@ function createTriangles(num)
 	var height = Math.sqrt(Math.pow(side, 2) - Math.pow(side/2, 2))
 
 	// Calculate the gradient
-	var colorStart = $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex;
+	var colorStart = $('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').colorHex;
 	if (colorStart == "")
 		colorStart = "#ffffff";
 
 	colorStart = hexToRGB(colorStart);
 
-	var colorEnd = $('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').colorHex;
+	var colorEnd = $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex;
 	if (colorEnd == "")
 		colorEnd = "#ffffff";
 
