@@ -133,7 +133,7 @@ function createTriangles(num)
 
 			ctx.lineWidth = "2";
 
-			if (i % 2 == 1)
+			if (i % 2 == 0)
 			{
 				ctx.moveTo(x, y);
 
