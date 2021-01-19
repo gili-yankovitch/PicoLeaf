@@ -199,14 +199,14 @@ function createTriangles(num)
 $(document).ready(function() {
 	console.log("Init");
 
-	createPicker("pickers", "picker0", function(event) {
-		console.log("Color #0: " + $('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
+	createPicker("pickers", "picker1", function(event) {
+		console.log("Color #1: " + $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
 
 		createTriangles(NUM_TRIANGLES);
 	});
 
-	createPicker("pickers", "picker1", function(event) {
-		console.log("Color #1: " + $('#picker1').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
+	createPicker("pickers", "picker0", function(event) {
+		console.log("Color #0: " + $('#picker0').tinycolorpicker().data('plugin_tinycolorpicker').colorHex);
 
 		createTriangles(NUM_TRIANGLES);
 	});

@@ -59,7 +59,9 @@ def _get():
 
 	if ledData is None:
 		ledData = rq.get("/".join((RETRIEVE_URL, ID))).json()
-		version = ledData["version"]
+
+		if "version" in ledData:
+			version = ledData["version"]
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
