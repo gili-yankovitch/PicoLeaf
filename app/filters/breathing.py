@@ -2,7 +2,7 @@
 from app.animation import Animation
 
 def init(colors):
-	animation = Animation(colors, 31, 255, 750)
+	animation = Animation(colors, 31, 40, 750)
 
 	initFrame = animation.createFrame()
 
