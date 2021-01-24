@@ -81,6 +81,8 @@ class Frame:
 	def __init__(self, frameData):
 		self.leds = []
 
+		self.iterIdx = 0
+
 		if type(frameData) is list:
 			for led in frameData:
 				if "brightness" not in led:
@@ -142,6 +144,20 @@ class Frame:
 		data += pack("B", OPCODE_FRAME_END)
 
 		return data
+
+	def __iter__(self):
+		self.iterIdx = 0
+
+		return self
+
+	def __next__(self):
+		if self.iterIdx == len(self.leds):
+			raise StopIteration()
+
+		led = self.leds[self.iterIdx]
+		self.iterIdx += 1
+
+		return led
 
 	def __repr__(self):
 		data = []

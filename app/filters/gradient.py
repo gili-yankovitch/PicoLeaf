@@ -4,16 +4,11 @@ from math import floor, ceil
 
 LEDS_PER_FRAME = 6
 FRAMES_FOR_ANIMATION = 31
+FRAMES_FOR_ANIMATION = 5
 
-redDiff = 0
-greenDiff = 0
-blueDiff = 0
+diffs = []
 
 def init(colors):
-	global redDiff
-	global greenDiff
-	global blueDiff
-
 	animation = Animation(colors, FRAMES_FOR_ANIMATION, 40, 750)
 
 	initFrame = animation.createFrame()
@@ -21,32 +16,35 @@ def init(colors):
 	initFrame.setBrightness(16)
 
 	# Calculate the "gradient-step"
-	redStart = colors[0]["red"]
-	redEnd = colors[LEDS_PER_FRAME * 2]["red"]
-	redDiff = (redEnd - redStart) / FRAMES_FOR_ANIMATION
+	for led, idx in zip(colors, range(len(colors))):
+		redStart = colors[idx]["red"]
+		redEnd = colors[(idx + LEDS_PER_FRAME * 2) % len(colors)]["red"]
+		redDiff = (redEnd - redStart) / (FRAMES_FOR_ANIMATION / 2)
 
-	if (redDiff < 0):
-		redDiff = int(ceil(redDiff))
-	else:
-		redDiff = int(floor(redDiff))
+		if (redDiff < 0):
+			redDiff = int(ceil(redDiff))
+		else:
+			redDiff = int(floor(redDiff))
 
-	greenStart = colors[0]["green"]
-	greenEnd = colors[LEDS_PER_FRAME * 2]["green"]
-	greenDiff = (greenEnd - greenStart) / FRAMES_FOR_ANIMATION
+		greenStart = colors[idx]["green"]
+		greenEnd = colors[(idx + LEDS_PER_FRAME * 2) % len(colors)]["green"]
+		greenDiff = (greenEnd - greenStart) / (FRAMES_FOR_ANIMATION / 2)
 
-	if (greenDiff < 0):
-		greenDiff = int(ceil(greenDiff))
-	else:
-		greenDiff = int(floor(greenDiff))
+		if (greenDiff < 0):
+			greenDiff = int(ceil(greenDiff))
+		else:
+			greenDiff = int(floor(greenDiff))
 
-	blueStart = colors[0]["blue"]
-	blueEnd = colors[LEDS_PER_FRAME * 2]["blue"]
-	blueDiff = (blueEnd - blueStart) / FRAMES_FOR_ANIMATION
+		blueStart = colors[idx]["blue"]
+		blueEnd = colors[(idx + LEDS_PER_FRAME * 2) % len(colors)]["blue"]
+		blueDiff = (blueEnd - blueStart) / (FRAMES_FOR_ANIMATION / 2)
 
-	if (blueDiff < 0):
-		blueDiff = int(ceil(blueDiff))
-	else:
-		blueDiff = int(floor(blueDiff))
+		if (blueDiff < 0):
+			blueDiff = int(ceil(blueDiff))
+		else:
+			blueDiff = int(floor(blueDiff))
+
+		diffs.append({"red": redDiff, "green": greenDiff, "blue": blueDiff})
 
 	# print(redDiff, greenDiff, blueDiff)
 
@@ -57,6 +55,9 @@ def frame(animation):
 
 	direction = -1 if animation.currentFrameNum() > ((FRAMES_FOR_ANIMATION + 1) / 2) else 1
 
-	nextFrame.addColors(redDiff * direction, greenDiff * direction, blueDiff * direction)
+	for led, idx in zip(nextFrame, range(len(diffs))):
+		led.red += diffs[idx]["red"] * direction
+		led.green += diffs[idx]["green"] * direction
+		led.blue += diffs[idx]["blue"] * direction
 
 	return animation
