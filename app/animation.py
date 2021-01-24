@@ -101,6 +101,12 @@ class Frame:
 
 	def addColors(self, red, green, blue):
 		for led in self.leds:
+			led.red = (led.red + red + 0x100) & 0xff
+			led.green = (led.green + green + 0x100) & 0xff
+			led.blue = (led.blue + blue + 0x100) & 0xff
+
+	def addColors_limited(self, red, green, blue):
+		for led in self.leds:
 			if led.red + red < 0:
 				led.red = 0
 			elif led.red + red > 0xff:
