@@ -45,6 +45,9 @@ class Animation:
 
 			data += pack("BB", OPCODE_SLEEP, self.perFrameWait)
 
+		# Add one more "fake LED" to fix late-lit last LED
+		data += self.frames[-1].encode()
+
 		endSleep = self.perAnimationWait
 
 		while endSleep > 255:
