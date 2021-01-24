@@ -99,6 +99,29 @@ class Frame:
 		for led in self.leds:
 			led.brightness += value
 
+	def addColors(self, red, green, blue):
+		for led in self.leds:
+			if led.red + red < 0:
+				led.red = 0
+			elif led.red + red > 0xff:
+				led.red = 0xff
+			else:
+				led.red += red
+
+			if led.green + green < 0:
+				led.green = 0
+			elif led.green + green > 0xff:
+				led.green = 0xff
+			else:
+				led.green += green
+
+			if led.blue + blue < 0:
+				led.blue = 0
+			elif led.blue + blue > 0xff:
+				led.blue = 0xff
+			else:
+				led.blue += blue
+
 	def encode(self):
 		data = bytes()
 		data += pack("B", OPCODE_FRAME_START)

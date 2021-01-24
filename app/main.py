@@ -69,6 +69,8 @@ def _get():
 	for frameIdx in animation:
 		frame = filters.filters[ledData["animation"]].frame(animation)
 
+	# print(animation)
+
 	return response + animation.encode()
 
 @app.route("/getText", methods = ["GET"])
