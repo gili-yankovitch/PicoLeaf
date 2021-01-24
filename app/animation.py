@@ -173,9 +173,9 @@ class Frame:
 
 class LED:
 	def __init__(self, red, green, blue, brightness):
-		self.red = red
-		self.green = green
-		self.blue = blue
+		self.red = abs(red)
+		self.green = abs(green)
+		self.blue = abs(blue)
 		self.brightness = brightness
 
 	def encode(self):

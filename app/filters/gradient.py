@@ -4,7 +4,6 @@ from math import floor, ceil
 
 LEDS_PER_FRAME = 6
 FRAMES_FOR_ANIMATION = 31
-FRAMES_FOR_ANIMATION = 5
 
 diffs = []
 
