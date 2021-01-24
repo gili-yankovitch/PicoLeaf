@@ -3,7 +3,7 @@ from app.animation import Animation
 from math import floor, ceil
 
 LEDS_PER_FRAME = 6
-FRAMES_FOR_ANIMATION = 31
+FRAMES_FOR_ANIMATION = 61
 
 diffs = []
 
@@ -17,7 +17,7 @@ def init(colors):
 	# Calculate the "gradient-step"
 	for led, idx in zip(colors, range(len(colors))):
 		redStart = colors[idx]["red"]
-		redEnd = colors[(idx + LEDS_PER_FRAME * 2) % len(colors)]["red"]
+		redEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["red"]
 		redDiff = (redEnd - redStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (redDiff < 0):
@@ -26,7 +26,7 @@ def init(colors):
 			redDiff = int(floor(redDiff))
 
 		greenStart = colors[idx]["green"]
-		greenEnd = colors[(idx + LEDS_PER_FRAME * 2) % len(colors)]["green"]
+		greenEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["green"]
 		greenDiff = (greenEnd - greenStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (greenDiff < 0):
@@ -35,7 +35,7 @@ def init(colors):
 			greenDiff = int(floor(greenDiff))
 
 		blueStart = colors[idx]["blue"]
-		blueEnd = colors[(idx + LEDS_PER_FRAME * 2) % len(colors)]["blue"]
+		blueEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["blue"]
 		blueDiff = (blueEnd - blueStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (blueDiff < 0):
@@ -52,7 +52,7 @@ def init(colors):
 def frame(animation):
 	nextFrame = animation.createFrame()
 
-	direction = -1 if animation.currentFrameNum() > ((FRAMES_FOR_ANIMATION + 1) / 2) else 1
+	direction = -1 if animation.currentFrameNum() > ((FRAMES_FOR_ANIMATION) / 2) else 1
 
 	for led, idx in zip(nextFrame, range(len(diffs))):
 		led.red += diffs[idx]["red"] * direction
