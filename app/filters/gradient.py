@@ -3,7 +3,7 @@ from app.animation import Animation
 from math import floor, ceil
 
 LEDS_PER_FRAME = 6
-FRAMES_FOR_ANIMATION = 31
+FRAMES_FOR_ANIMATION = 45
 
 diffs = []
 
@@ -14,11 +14,13 @@ def init(colors):
 
 	initFrame.setBrightness(16)
 
+	changeSpeed = 1.5
+
 	# Calculate the "gradient-step"
 	for led, idx in zip(colors, range(len(colors))):
 		redStart = colors[idx]["red"]
 		redEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["red"]
-		redDiff = (redEnd - redStart) / (FRAMES_FOR_ANIMATION / 2)
+		redDiff = changeSpeed * (redEnd - redStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (redDiff < 0):
 			redDiff = int(ceil(redDiff))
@@ -27,7 +29,7 @@ def init(colors):
 
 		greenStart = colors[idx]["green"]
 		greenEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["green"]
-		greenDiff = (greenEnd - greenStart) / (FRAMES_FOR_ANIMATION / 2)
+		greenDiff = changeSpeed * (greenEnd - greenStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (greenDiff < 0):
 			greenDiff = int(ceil(greenDiff))
@@ -36,14 +38,14 @@ def init(colors):
 
 		blueStart = colors[idx]["blue"]
 		blueEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["blue"]
-		blueDiff = (blueEnd - blueStart) / (FRAMES_FOR_ANIMATION / 2)
+		blueDiff = changeSpeed * (blueEnd - blueStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (blueDiff < 0):
 			blueDiff = int(ceil(blueDiff))
 		else:
 			blueDiff = int(floor(blueDiff))
 
-		diffs.append({"red": redDiff * 2, "green": greenDiff * 2, "blue": blueDiff * 2})
+		diffs.append({"red": redDiff, "green": greenDiff, "blue": blueDiff})
 
 	# print(redDiff, greenDiff, blueDiff)
 
