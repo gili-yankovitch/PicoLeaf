@@ -55,8 +55,8 @@ def frame(animation):
 	direction = -1 if animation.currentFrameNum() > ((FRAMES_FOR_ANIMATION) / 2) else 1
 
 	for led, idx in zip(nextFrame, range(len(diffs))):
-		led.red += diffs[idx]["red"] * direction
-		led.green += diffs[idx]["green"] * direction
-		led.blue += diffs[idx]["blue"] * direction
+		led.add(diffs[idx]["red"] * direction,
+			diffs[idx]["green"] * direction,
+			diffs[idx]["blue"] * direction)
 
 	return animation

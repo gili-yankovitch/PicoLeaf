@@ -178,6 +178,28 @@ class LED:
 		self.blue = abs(blue)
 		self.brightness = brightness
 
+	def add(self, red, green, blue):
+		if self.red + red < 0:
+			self.red = 0
+		elif self.red  + red > 255:
+			self.red = 255
+		else:
+			self.red += red
+
+		if self.green + green < 0:
+			self.green = 0
+		elif self.green  + green > 255:
+			self.green = 255
+		else:
+			self.green += green
+
+		if self.blue + blue < 0:
+			self.blue = 0
+		elif self.blue  + blue > 255:
+			self.blue = 255
+		else:
+			self.blue += blue
+
 	def encode(self):
 		return pack("BBBBB", OPCODE_LED, abs(self.red), abs(self.green), abs(self.blue), abs(self.brightness))
 
