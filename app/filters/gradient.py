@@ -3,7 +3,7 @@ from app.animation import Animation
 from math import floor, ceil
 
 LEDS_PER_FRAME = 6
-FRAMES_FOR_ANIMATION = 45
+FRAMES_FOR_ANIMATION = 31
 
 diffs = []
 
