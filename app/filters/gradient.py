@@ -43,7 +43,7 @@ def init(colors):
 		else:
 			blueDiff = int(floor(blueDiff))
 
-		diffs.append({"red": redDiff, "green": greenDiff, "blue": blueDiff})
+		diffs.append({"red": redDiff * 2, "green": greenDiff * 2, "blue": blueDiff * 2})
 
 	# print(redDiff, greenDiff, blueDiff)
 
