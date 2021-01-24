@@ -48,7 +48,7 @@ def init(colors):
 	else:
 		blueDiff = int(floor(blueDiff))
 
-	print(redDiff, greenDiff, blueDiff)
+	# print(redDiff, greenDiff, blueDiff)
 
 	return animation
 
