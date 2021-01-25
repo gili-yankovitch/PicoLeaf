@@ -6,7 +6,7 @@ def init(colors):
 
 	initFrame = animation.createFrame()
 
-	initFrame.setBrightness(0)
+	initFrame.setBrightness(1)
 
 	return animation
 
