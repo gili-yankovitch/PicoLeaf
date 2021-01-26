@@ -19,7 +19,8 @@ def init(colors):
 	# Calculate the "gradient-step"
 	for led, idx in zip(colors, range(len(colors))):
 		redStart = colors[idx]["red"]
-		redEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["red"]
+		# redEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["red"]
+		redEnd = (redStart + 128) & 0xff
 		redDiff = changeSpeed * (redEnd - redStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (redDiff < 0):
@@ -28,7 +29,8 @@ def init(colors):
 			redDiff = int(floor(redDiff))
 
 		greenStart = colors[idx]["green"]
-		greenEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["green"]
+		# greenEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["green"]
+		greenEnd = (greenStart + 128) & 0xff
 		greenDiff = changeSpeed * (greenEnd - greenStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (greenDiff < 0):
@@ -37,7 +39,8 @@ def init(colors):
 			greenDiff = int(floor(greenDiff))
 
 		blueStart = colors[idx]["blue"]
-		blueEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["blue"]
+		# blueEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["blue"]
+		blueEnd = (blueStart + 128) & 0xff
 		blueDiff = changeSpeed * (blueEnd - blueStart) / (FRAMES_FOR_ANIMATION / 2)
 
 		if (blueDiff < 0):
