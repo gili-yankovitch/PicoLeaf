@@ -8,7 +8,7 @@ FRAMES_FOR_ANIMATION = 16
 diffs = []
 
 def init(colors):
-	animation = Animation(colors, FRAMES_FOR_ANIMATION, 40, 750)
+	animation = Animation(colors, FRAMES_FOR_ANIMATION, 100, 50)
 
 	initFrame = animation.createFrame()
 
