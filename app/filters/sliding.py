@@ -4,7 +4,7 @@ from app.animation import Animation
 LEDS_PER_FRAME = 6
 
 def init(colors):
-	animation = Animation(colors, len(colors) / LEDS_PER_FRAME, 100, 50)
+	animation = Animation(colors, len(colors) / LEDS_PER_FRAME, 200, 50)
 
 	initFrame = animation.createFrame()
 
