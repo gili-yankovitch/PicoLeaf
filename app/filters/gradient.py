@@ -3,7 +3,7 @@ from app.animation import Animation
 from math import floor, ceil
 
 LEDS_PER_FRAME = 6
-FRAMES_FOR_ANIMATION = 15
+FRAMES_FOR_ANIMATION = 16
 
 diffs = []
 
@@ -21,7 +21,7 @@ def init(colors):
 		redStart = colors[idx]["red"]
 		# redEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["red"]
 		redEnd = (redStart + 64) & 0xff
-		redDiff = changeSpeed * (redEnd - redStart) / (FRAMES_FOR_ANIMATION / 2)
+		redDiff = changeSpeed * (redEnd - redStart) / ((FRAMES_FOR_ANIMATION - 0) / 2)
 
 		if (redDiff < 0):
 			redDiff = int(ceil(redDiff))
@@ -31,7 +31,7 @@ def init(colors):
 		greenStart = colors[idx]["green"]
 		# greenEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["green"]
 		greenEnd = (greenStart + 64) & 0xff
-		greenDiff = changeSpeed * (greenEnd - greenStart) / (FRAMES_FOR_ANIMATION / 2)
+		greenDiff = changeSpeed * (greenEnd - greenStart) / ((FRAMES_FOR_ANIMATION - 0) / 2)
 
 		if (greenDiff < 0):
 			greenDiff = int(ceil(greenDiff))
@@ -41,7 +41,7 @@ def init(colors):
 		blueStart = colors[idx]["blue"]
 		# blueEnd = colors[(idx + LEDS_PER_FRAME * 3) % len(colors)]["blue"]
 		blueEnd = (blueStart + 64) & 0xff
-		blueDiff = changeSpeed * (blueEnd - blueStart) / (FRAMES_FOR_ANIMATION / 2)
+		blueDiff = changeSpeed * (blueEnd - blueStart) / ((FRAMES_FOR_ANIMATION - 0) / 2)
 
 		if (blueDiff < 0):
 			blueDiff = int(ceil(blueDiff))
@@ -55,9 +55,12 @@ def init(colors):
 	return animation
 
 def frame(animation):
+	direction = -1 if animation.currentFrameNum() > (FRAMES_FOR_ANIMATION) / 2 else 1
+
 	nextFrame = animation.createFrame()
 
-	direction = -1 if animation.currentFrameNum() > ((FRAMES_FOR_ANIMATION) / 2) else 1
+	if animation.currentFrameNum() == floor((FRAMES_FOR_ANIMATION) / 2):
+		direction = 0
 
 	for led, idx in zip(nextFrame, range(len(diffs))):
 		led.add(diffs[idx]["red"] * direction,

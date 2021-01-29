@@ -69,7 +69,7 @@ def _get():
 	for frameIdx in animation:
 		frame = filters.filters[ledData["animation"]].frame(animation)
 
-	# print(animation)
+	print(animation)
 
 	return response + animation.encode()
 
