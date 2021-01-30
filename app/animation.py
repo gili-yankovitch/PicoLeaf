@@ -43,7 +43,13 @@ class Animation:
 		for frame in self.frames:
 			data += frame.encode()
 
-			data += pack("BB", OPCODE_SLEEP, self.perFrameWait)
+			sleepTime = self.perFrameWait
+
+			while sleepTime > 255:
+				data += pack("BB", OPCODE_SLEEP, 255)
+				sleepTime -= 255
+
+			data += pack("BB", OPCODE_SLEEP, sleepTime)
 
 		endSleep = self.perAnimationWait
 
