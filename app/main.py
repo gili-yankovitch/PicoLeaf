@@ -4,7 +4,9 @@ import os
 # from requests import get, post, put
 import requests as rq
 import configparser
-from flask import Flask, request, Response, render_template
+from werkzeug.utils import secure_filename
+from flask import Flask, request, Response, render_template, send_from_directory
+from flask_socketio import SocketIO
 from json import dumps
 from struct import pack
 from . import filters
@@ -25,6 +27,33 @@ app = Flask(__name__,
 	static_folder = 'static',
 	template_folder='templates')
 
+socketio = SocketIO(app)
+
+clients = []
+
+def _sendConnectedClients(data):
+	disconnected = []
+	for client in clients:
+		try:
+			socketio.emit("output", data, room = client)
+		except:
+			disconnected.append(client)
+
+	for client in disconnected:
+		clients.remove(client)
+
+@socketio.on("connect")
+def connection():
+	global clients
+	print("Client connected: %s" % request.sid)
+	clients.append(request.sid)
+
+@socketio.on("disconnect")
+def disconnection():
+	global clients
+	print("Client disconnected: %s" % request.sid)
+	clients.remove(request.sid)
+
 def _createStore(data):
 	return rq.post(CREATE_URL, headers = {"content-type": "application/json"}, json = data).json()
 
@@ -42,6 +71,9 @@ def _update():
 	version += 1
 
 	print("Version: %d" % version)
+
+	# Send signal to all clients
+	_sendConnectedClients("*")
 
 	return dumps(res)
 
@@ -84,5 +116,17 @@ def _getText():
 	return dumps(ledData)
 
 @app.route("/", methods = ["GET"])
-def root():
-	return render_template("index.html")
+@app.route("/<path:path>", methods = ["GET"])
+def root(**args):
+	if "path" not in args:
+		path = None
+	else:
+		path = args["path"]
+
+	if path == "" or path is None:
+		path = "index.html"
+
+	print("Path = %s" % path)
+
+	return send_from_directory("static", secure_filename(path))
+	# return render_template(path)
