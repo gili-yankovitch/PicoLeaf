@@ -33,7 +33,9 @@ clients = []
 
 def _sendConnectedClients(data):
 	disconnected = []
+	print("Distributing updates to connected clients...")
 	for client in clients:
+		print("Sending to client: %s" % client)
 		try:
 			socketio.emit("output", data, room = client)
 		except:
