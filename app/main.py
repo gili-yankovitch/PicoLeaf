@@ -43,6 +43,7 @@ def _sendConnectedClients(data):
 
 	for client in disconnected:
 		clients.remove(client)
+	print("Done!")
 
 @socketio.on("connect")
 def connection():
