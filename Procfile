@@ -1,1 +1,2 @@
-web: gunicorn wsgi:socketio
+#web: gunicorn wsgi:app
+web: python3 ./wsgi.py
