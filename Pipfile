@@ -12,7 +12,7 @@ requests = "*"
 flask_socketio = "*"
 websockets = "*"
 simple-websocket = "*"
-eventlet = "0.30.2"
+eventlet = "==0.30.2"
 
 [requires]
 python_version = "3.6"
