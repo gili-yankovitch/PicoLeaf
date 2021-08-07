@@ -4,3 +4,4 @@ flask
 flask_socketio
 websockets
 simple-websocket
+eventlet==0.30.2
