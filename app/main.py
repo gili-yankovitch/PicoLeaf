@@ -32,6 +32,8 @@ socketio = SocketIO(app)
 clients = []
 
 def _sendConnectedClients(data):
+	socketio.emit("output", data, broadcast = True)
+	return
 	disconnected = []
 	print("Distributing updates to connected clients...")
 	for client in clients:
@@ -49,7 +51,7 @@ def _sendConnectedClients(data):
 def connection():
 	global clients
 	print("Client connected: %s" % request.sid)
-	clients.append(request.sid)
+	# clients.append(request.sid)
 
 @socketio.on("disconnect")
 def disconnection():
