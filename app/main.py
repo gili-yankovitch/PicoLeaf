@@ -9,6 +9,7 @@ from flask import Flask, request, Response, render_template, send_from_directory
 from flask_socketio import SocketIO
 from json import dumps
 from struct import pack
+from datetime import datetime
 from . import filters
 
 CREATE_URL = "https://jsonstorage.net/api/items"
@@ -30,6 +31,11 @@ app = Flask(__name__,
 socketio = SocketIO(app)
 
 clients = []
+
+schedule = {
+		23: "off",
+		9: "still"
+	}
 
 def _sendConnectedClients(data):
 	socketio.emit("output", data, broadcast = True)
@@ -57,7 +63,7 @@ def connection():
 def disconnection():
 	global clients
 	print("Client disconnected: %s" % request.sid)
-	clients.remove(request.sid)
+	#clients.remove(request.sid)
 
 def _createStore(data):
 	return rq.post(CREATE_URL, headers = {"content-type": "application/json"}, json = data).json()
@@ -92,6 +98,11 @@ def _get():
 
 		if "version" in ledData:
 			version = ledData["version"]
+
+	# Check time
+	for hour in schedule:
+		if datetime.now().hour == hour:
+			loedData["animation"] = schedule[hour]
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
