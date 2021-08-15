@@ -106,12 +106,16 @@ def _get():
 		if "version" in ledData:
 			version = ledData["version"]
 
-	# Check time
-	for hour in schedule:
-		if datetime.now().hour == hour:
-			print("Changing to %s as scheduled" % schedule[hour])
-			ledData["animation"] = schedule[hour]
-			version = 255
+	# Get current hour
+	hour = datetime.now().hour
+
+	if hour in schedule:
+		print("Changing to %s as scheduled" % schedule[hour])
+		ledData["animation"] = schedule[hour]
+		version = 255
+	elif version == 255:
+		# Just when it's out of schedule, restart version counter
+		version = 0
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
