@@ -34,8 +34,14 @@ clients = []
 
 schedule = {
 		23: "off",
-		00: "off",
-		9: "still"
+		 0: "off",
+		 1: "off",
+		 2: "off",
+		 3: "off",
+		 4: "off",
+		 5: "off",
+		 6: "off",
+		 7: "off"
 	}
 
 def _sendConnectedClients(data):
@@ -105,6 +111,7 @@ def _get():
 		if datetime.now().hour == hour:
 			print("Changing to %s as scheduled" % schedule[hour])
 			ledData["animation"] = schedule[hour]
+			version += 1
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
@@ -112,6 +119,7 @@ def _get():
 	if "animation" not in ledData or	\
 		"colors" not in ledData or		\
 		ledData["animation"] not in filters.filters:
+		print("Invalid data")
 		return "\x00Invalid data", 400
 
 	animation = filters.filters[ledData["animation"]].init(ledData["colors"])
