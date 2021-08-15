@@ -34,6 +34,7 @@ clients = []
 
 schedule = {
 		23: "off",
+		00: "off",
 		9: "still"
 	}
 
@@ -102,6 +103,7 @@ def _get():
 	# Check time
 	for hour in schedule:
 		if datetime.now().hour == hour:
+			print("Changing to %s as scheduled" % schedule[hour])
 			ledData["animation"] = schedule[hour]
 
 	response = bytes()
