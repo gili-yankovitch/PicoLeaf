@@ -102,7 +102,7 @@ def _get():
 	# Check time
 	for hour in schedule:
 		if datetime.now().hour == hour:
-			loedData["animation"] = schedule[hour]
+			ledData["animation"] = schedule[hour]
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
