@@ -109,13 +109,14 @@ def _get():
 	# Get current hour
 	hour = datetime.now().hour
 
+	animationName = ledData["animation"]
+
 	if hour in schedule:
 		print("Changing to %s as scheduled" % schedule[hour])
-		ledData["animation"] = schedule[hour]
+		animationName = schedule[hour]
 		version = 255
 	elif version == 255:
 		# Just when it's out of schedule, restart version counter
-		ledData["animation"] = "still"
 		version = 0
 
 	response = bytes()
@@ -127,10 +128,10 @@ def _get():
 		print("Invalid data")
 		return "\x00Invalid data", 400
 
-	animation = filters.filters[ledData["animation"]].init(ledData["colors"])
+	animation = filters.filters[animationName].init(ledData["colors"])
 
 	for frameIdx in animation:
-		frame = filters.filters[ledData["animation"]].frame(animation)
+		frame = filters.filters[animationName].frame(animation)
 
 	# print(animation)
 
