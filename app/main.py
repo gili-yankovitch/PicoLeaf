@@ -115,6 +115,7 @@ def _get():
 		version = 255
 	elif version == 255:
 		# Just when it's out of schedule, restart version counter
+		ledData["animation"] = "still"
 		version = 0
 
 	response = bytes()
