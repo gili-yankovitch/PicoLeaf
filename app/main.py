@@ -111,7 +111,7 @@ def _get():
 		if datetime.now().hour == hour:
 			print("Changing to %s as scheduled" % schedule[hour])
 			ledData["animation"] = schedule[hour]
-			version += 1
+			version = 255
 
 	response = bytes()
 	response += pack("BB", VALID_CODE, version & 0xff) # Version
