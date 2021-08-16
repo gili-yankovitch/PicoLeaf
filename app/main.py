@@ -33,6 +33,7 @@ socketio = SocketIO(app)
 clients = []
 
 schedule = {
+		22: "off",
 		23: "off",
 		 0: "off",
 		 1: "off",
