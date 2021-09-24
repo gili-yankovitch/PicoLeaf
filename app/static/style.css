@@ -69,7 +69,7 @@ small
 	margin-bottom: 10px;
 }
 
-select, input
+input
 {
 	width: 50px;
 	height: 25px;
@@ -77,6 +77,24 @@ select, input
 	background-color: white;
 	padding: 3px;
 	box-sizing: border-box;
+}
+
+select
+{
+	margin-bottom: 1em;
+	padding: .25em;
+	border: 0;
+	border-bottom: 2px solid currentcolor; 
+	font-family: inherit;
+	font-size: 16px;
+	transition: all 150ms ease;
+	border-radius: 5px;
+	width: 200px;
+	
+	&:focus, &:active {
+		outline: 0;
+		border-bottom-color: red;
+	}
 }
 
 button
