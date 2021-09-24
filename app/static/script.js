@@ -3,7 +3,7 @@ var NUM_TRIANGLES = 4;
 var LEDS_PER_COLOR = 6;
 
 var endpointsServiceAssets = "http://central-endpoints.herokuapp.com/get";
-// var endpointsServiceUpdate = "http://central-endpoints.herokuapp.com/update";
+var endpointsServiceUpdate = "http://central-endpoints.herokuapp.com/update";
 
 // Grab the select box
 let inventoryTag;
@@ -32,13 +32,24 @@ function getEndpoints(callback)
 
 function updateEndpoint(endpointId, endpointName, data)
 {
+	// Update the DB data
 	$.ajax({
 		type: "POST",
-		url: "http://" + endpointsDict[endpointName]["address"] + "/update",
-		data: JSON.stringify(data),
+		url: endpointsServiceUpdate,
+		data: JSON.stringify({"id": endpointId, "name": endpointName, "data": JSON.stringify(data)}),
 		success: function ()
 		{
-			console.log("Update done");
+			console.log("Posting to: " + "http://" + endpointsDict[endpointName]["address"] + "/update");
+
+			// Notify device
+			$.ajax({
+				type: "POST",
+				url: "http://" + endpointsDict[endpointName]["address"] + "/update",
+				success: function ()
+				{
+					console.log("Update done");
+				}
+			});
 		},
 		contentType: "application/json",
 		dataType: "json"
@@ -226,7 +237,14 @@ function createTriangles(num, sendUpdate)
 		}
 	}
 
-	var output = {"animation": $("input[name='animation']:checked").val(), "colors": colorPut};
+	var hexColors = []
+
+	for (var idx in colorPut)
+	{
+		hexColors.push(rgbToHex("rgb(" + colorPut[idx]["red"] + "," + colorPut[idx]["green"] + "," + colorPut[idx]["blue"] + ")"));
+	}
+
+	var output = {"animation": $("input[name='animation']:checked").val(), "colors": hexColors};
 
 	// Update data
 	console.log(output);
