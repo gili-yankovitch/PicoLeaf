@@ -13,6 +13,7 @@ flask_socketio = "*"
 websockets = "*"
 simple-websocket = "*"
 eventlet = "==0.30.2"
+flask_cors = "*"
 
 [requires]
 python_version = "3.6"
