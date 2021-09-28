@@ -10,6 +10,24 @@ let inventoryTag;
 
 let endpointsDict = {};
 
+function notifyDevice(address)
+{
+	// Notify device
+	$.ajax({
+		type: "POST",
+		url: "http://" + address + "/update",
+		success: function ()
+		{
+			console.log("Update done");
+		}
+	});
+}
+
+function refreshAnimation()
+{
+	notifyDevice(endpointsDict[inventoryTag.value]["address"]);
+}
+
 function getEndpoints(callback)
 {
 	$.get(
@@ -41,15 +59,8 @@ function updateEndpoint(endpointId, endpointName, data)
 		{
 			console.log("Posting to: " + "http://" + endpointsDict[endpointName]["address"] + "/update");
 
-			// Notify device
-			$.ajax({
-				type: "POST",
-				url: "http://" + endpointsDict[endpointName]["address"] + "/update",
-				success: function ()
-				{
-					console.log("Update done");
-				}
-			});
+			notifyDevice(endpointsDict[endpointName]["address"]);
+
 		},
 		contentType: "application/json",
 		dataType: "json"
@@ -370,4 +381,6 @@ $(document).ready(function() {
 	});
 
 	populateEndpoints();
+
+	$("#title").click(refreshAnimation);
 });
